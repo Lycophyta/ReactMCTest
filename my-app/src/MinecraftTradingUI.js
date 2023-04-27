@@ -32,44 +32,38 @@ function MinecraftTradingUI() {
   };
 
   const handleTrade = (trade) => {
-    // check if the player has enough input items for the trade
-    if (!checkInventory(trade.input)) {
-      return;
-    }
+  // check if the player has enough input items for the trade
+  if (!checkInventory(trade.input)) {
+    return;
+  }
 
-    // check if the player has enough output space for the trade
-    const outputItem = inventory.find((item) => item.name === trade.output);
-    if (!outputItem || outputItem.quantity + trade.amount < 0) {
-      console.error(`Not enough space for ${trade.output}!`);
-      return;
-    }
+  // perform the trade by removing the input item and adding the output item
+  setInventory((inv) =>
+    inv.map((item) =>
+      item.name === trade.input
+        ? { ...item, quantity: item.quantity - trade.amount }
+        : item
+    )
+  );
 
-    // perform the trade by removing the input item and adding the output item
+  // Define the output item before the animation
+  const outputItem = trades.find((t) => t.input === trade.input).output;
+
+  // Play the animation and update the inventory after a delay
+  setShowAnimation(true);
+  setTimeout(() => {
+    setShowAnimation(false);
     setInventory((inv) =>
-      inv.map((item) =>
-        item.name === trade.input
-          ? { ...item, quantity: item.quantity - trade.amount }
-          : item
-      )
-    );
-    setInventory((inv) =>
-      inv.find((item) => item.name === trade.output)
+      inv.find((item) => item.name === outputItem)
         ? inv.map((item) =>
-            item.name === trade.output
-              ? { ...item, quantity: item.quantity + trade.amount }
+            item.name === outputItem
+              ? { ...item, quantity: item.quantity + 1 }
               : item
           )
-        : [...inv, { name: trade.output, quantity: trade.amount }]
+        : [...inv, { name: outputItem, quantity: 1 }]
     );
-  };
-
-  const toggleInventory = () => {
-    setShowInventory(!showInventory);
-  };
-
-  const toggleTrades = () => {
-    setShowTrades(!showTrades);
-  };
+  }, 1000);
+};
 
   return (
     <div className="minecraft-trading-ui-container">
