@@ -30,12 +30,37 @@ function MinecraftTradingUI() {
     }
     return true;
   };
+const handleTrade = (trade) => {
+  // check if the player has enough input items for the trade
+  if (!checkInventory(trade.input)) {
+    return;
+  }
 
-  const handleTrade = (trade) => {
-    // check if the player has enough input items for the trade
-    if (!checkInventory(trade.input)) {
-      return;
+  // check if the player has enough emeralds to complete the trade
+  if (trade.output !== 'Emerald' && !checkInventory('Emerald')) {
+    return;
+  }
+
+  // perform the trade by removing the input item and adding the output item
+  const inputItem = inventory.find((item) => item.name === trade.input);
+  const outputItem = inventory.find((item) => item.name === trade.output);
+  if (inputItem && outputItem) {
+    const newInputQuantity = inputItem.quantity - trade.amount;
+    const newOutputQuantity = outputItem.quantity + 1;
+    if (newInputQuantity >= 0 && newOutputQuantity >= 0) {
+      setInventory((inv) =>
+        inv.map((item) =>
+          item.name === trade.input
+            ? { ...item, quantity: newInputQuantity }
+            : item.name === trade.output
+            ? { ...item, quantity: newOutputQuantity }
+            : item
+        )
+      );
     }
+  }
+};
+
 
     // perform the trade by removing the input item and adding the output item
     setInventory((inv) =>
