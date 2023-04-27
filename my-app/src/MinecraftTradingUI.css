@@ -1,0 +1,25 @@
+.minecraft-trading-ui-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.minecraft-trading-ui {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+
+.minecraft-inventory-box {
+  margin-bottom: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+
+.minecraft-trades-box {
+  padding: 20px;
+  border: 1px solid #ccc;
+}
