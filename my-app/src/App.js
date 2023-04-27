@@ -1,9 +1,10 @@
 import React from 'react';
+import './MinecraftTradingUI.css';
 import MinecraftTradingUI from './MinecraftTradingUI';
 
 function App() {
   return (
-    <div className="App">
+    <div className="app-container">
       <MinecraftTradingUI />
     </div>
   );
